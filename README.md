@@ -6,7 +6,7 @@ A single-page web app for tracking piano practice. It runs entirely in your brow
 
 - **Today:** streak, today's plan, and a practice timer with start, pause, resume and stop. Only active time is logged, and the timer survives closing the page.
 - **Focus next:** your weakest spots, built from "needs work" timestamp notes and the "what to fix" lines in a recording summary. Mark them improved (Tricky, Improving, Solid). They return to Tricky if flagged again.
-- **Review:** add recordings (a YouTube or Drive link, or a local video file) that play inside the app and write timestamped notes with a type, section, technique tag and optional attached resource. Tap a timestamp to jump to that moment.
+- **Review:** add recordings (a YouTube or Drive link, or a local video file) that play inside the app, either small on the page or in a pop-up window and write timestamped notes with a type, section, technique tag and optional attached resource. Tap a timestamp to jump to that moment.
 - **Tags:** create, rename and delete your own tags, and assign them to recordings, pieces and resources. Notes use them as technique tags.
 - **Search:** one box that searches recordings, notes, pieces, resources, tags, dates and calendar items.
 - **Pieces:** a library with a status for each piece, plus the weak spots tied to it.
@@ -20,6 +20,7 @@ Everything is editable, and the app uses a dark theme with no emojis.
 ## Run it
 
 - **Locally:** open `index.html` in a browser. Keep all the files and folders together.
+- **Local server (for YouTube playback):** YouTube will not play inside a page opened as a file. In the folder, run `python -m http.server 8000` and open `http://localhost:8000`.
 - **On GitHub Pages:** push the folder, then enable Pages (Settings, Pages, deploy from the main branch). Open the link on your phone and use "Add to Home Screen".
 
 ## Your data
