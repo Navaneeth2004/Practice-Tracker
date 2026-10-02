@@ -6,7 +6,9 @@ A single-page web app for tracking piano practice. It runs entirely in your brow
 
 - **Today:** streak, today's plan, and a practice timer with start, pause, resume and stop. Only active time is logged, and the timer survives closing the page.
 - **Focus next:** your weakest spots, built from "needs work" timestamp notes and the "what to fix" lines in a recording summary. Mark them improved (Tricky, Improving, Solid). They return to Tricky if flagged again.
-- **Review:** add recordings (a YouTube or Drive link, or a local video file) and write timestamped notes with a type, section, technique tag and optional attached resource. Tap a timestamp to jump to that moment.
+- **Review:** add recordings (a YouTube or Drive link, or a local video file) that play inside the app and write timestamped notes with a type, section, technique tag and optional attached resource. Tap a timestamp to jump to that moment.
+- **Tags:** create, rename and delete your own tags, and assign them to recordings, pieces and resources. Notes use them as technique tags.
+- **Search:** one box that searches recordings, notes, pieces, resources, tags, dates and calendar items.
 - **Pieces:** a library with a status for each piece, plus the weak spots tied to it.
 - **Resources:** save links or text, tagged by technique, and attach them to notes.
 - **Calendar:** a monthly view for planning and logging. Add items to any day, tick them off, and log minutes practiced.
@@ -45,11 +47,14 @@ js/
   logic/
     streaks.js        streak calculation
     focus.js          weak spots and improvement status
+    tags.js           tag library and tag picker
+    player.js         in-app video player (YouTube, Drive, files)
+    search.js         search across everything
     timer.js          practice timer
   views/              what each screen looks like (one file per screen)
-    today.js  review.js  pieces.js  resources.js  calendar.js  progress.js  backup.js
+    today.js  review.js  pieces.js  resources.js  calendar.js  tags.js  search.js  progress.js  backup.js
   actions/            what the buttons do (add, edit, delete, import, export)
-    review.js  pieces.js  resources.js  calendar.js  backup.js
+    review.js  pieces.js  resources.js  calendar.js  tags.js  backup.js
 ```
 
 Scripts are plain files, not ES modules, so double-clicking `index.html` works without a server. Load order matters and is set at the bottom of `index.html`.
