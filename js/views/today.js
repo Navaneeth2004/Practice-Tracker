@@ -1,0 +1,10 @@
+// Today screen
+V.today=function(){const s=streaks(),dow=new Date().getDay(),plan=db.cal[today()]||[],f=focus(),t=db.timer;
+ return `<h2>Today</h2><div class="card hero"><div class="row"><div><div class="big">${s.cur}</div><div class="mu">day streak (best ${s.best})</div></div><div style="margin-left:auto" class="${s.on?'good':'mu'}">${s.on?'Practiced today':'Not practiced yet'}</div></div></div>
+ <div class="card timer"><h3 style="margin-top:0">Practice session</h3><div class="big" id="tm">${hms(el())}</div><div class="row" style="margin-top:8px">
+ ${!t?'<button class="b" onclick="tm(\'start\')">Start</button>':t.run?'<button class="b" onclick="tm(\'pause\')">Pause</button>':'<button class="b" onclick="tm(\'resume\')">Resume</button>'}
+ ${t?'<button class="b s" onclick="tm(\'stop\')">Stop and save</button>':''}</div><div class="mu" style="margin-top:6px">Only active time is logged. Today: ${db.log[today()]||0} min</div></div>
+ <div class="card"><h3 style="margin-top:0">Today's plan (${DAYS[dow]})</h3>${plan.length?plan.map(p=>{const k=today()+'#'+p.id;return `<label class="row" style="padding:6px 0"><input type="checkbox" ${db.done[k]?'checked':''} onchange="db.done['${k}']=this.checked;save();render()"> ${E(p.text)}${p.min?' <span class="mu">'+p.min+' min</span>':''}</label>`}).join(''):'<span class="mu">Nothing planned. Add items in Calendar.</span>'}</div>
+ <h3>Focus next</h3>${f.length?f.slice(0,5).map(focusCard).join(''):'<div class="card mu">No weak spots yet. Mark notes as needs work in Review.</div>'}`};
+function focusCard(o){const s=(db.st[o.k]||{s:'tricky'}).s;return `<div class="card"><div class="row"><b>${E(pname(o.piece))} - ${E(o.label)}</b><span class="tag">${s}</span><span class="mu">flagged ${o.n}x</span></div>
+ ${o.refs.slice(0,3).map(r=>`<div class="mu">${E(r.r)}${r.t!=null?' @ '+fmt(r.t):''}: ${E(r.txt)}</div>`).join('')}<div style="margin-top:8px"><button class="b s" onclick="improve('${E(o.k).replace(/'/g,"\\'")}')">Mark improved</button></div></div>`}

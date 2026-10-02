@@ -1,0 +1,18 @@
+.hm{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.hm i{aspect-ratio:1;border-radius:7px;background:rgba(255,255,255,.06)}
+.hm i.a{background:linear-gradient(135deg,var(--ac),var(--ac2));box-shadow:0 0 12px rgba(232,185,95,.45)}
+.hm{grid-template-rows:repeat(7,auto);grid-auto-flow:column;gap:3px;width:100%}
+.hm i{border-radius:4px}
+.hm i.a{box-shadow:0 0 8px rgba(232,185,95,.4)}
+.hm i.f{background:transparent;box-shadow:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wd{text-align:center;color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:2px 0}
+.day{min-height:62px;border-radius:12px;border:1px solid var(--bd);background:rgba(255,255,255,.03);color:var(--tx);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;transition:.15s}
+.day:hover{background:rgba(255,255,255,.08)}
+.day.now{border-color:var(--ac)}
+.day.sel{background:linear-gradient(135deg,rgba(232,185,95,.28),rgba(217,128,60,.15));box-shadow:0 0 0 1px var(--ac)}
+.day b{font-weight:600;font-size:15px}
+.day small{font-size:10.5px;color:var(--mu)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ac)}
+.dot.ok{background:var(--ok)}
+@media(max-width:700px){.day{min-height:48px}.cal{gap:4px}}
