@@ -6,3 +6,4 @@ function readF(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onl
 function imp(merge){try{const d=JSON.parse($('#im').value);if(!merge){db=Object.assign(db,d)}else{for(const k of ['pieces','recs','res']){const ids=new Set(db[k].map(x=>x.id));(d[k]||[]).forEach(x=>{if(!ids.has(x.id))db[k].push(x)})}
  for(const k of ['log','done','st','sched']){db[k]=Object.assign({},d[k]||{},db[k])}}
  save();msg='Import complete.'}catch(e){msg='Could not read that backup.'}render()}
+function copyEx(b){const t=$('#ex');if(!t.value)return;t.select();try{document.execCommand('copy');b.textContent='Copied'}catch(e){b.textContent='Select the text and copy it'}setTimeout(()=>{b.textContent='Copy to clipboard'},1600)}
