@@ -18,7 +18,7 @@ function playerHtml(r,f){const u=r.url||'';let m='',can=false;
  else if(VID.test(u)){m=embedHtml(u,'vd');can=true}
  else if(ytId(u)){m=embedHtml(u,'yt');can=!isFile}
  else if(driveId(u)){m=embedHtml(u,'gd');can=true}
- if(m)return `<div class="vbar"><span class="mu">Video${driveId(u)?' (Drive cannot report the time, so type it yourself)':''}</span>${can?`<button class="b s sm" onclick="openRecVideo('${r.id}')">Expand</button>`:''}</div>${m}`;
+ if(m)return `${driveId(u)?'<div class="mu" style="margin-bottom:8px">Drive cannot report the time, so type it yourself.</div>':''}${m}`;
  if(r.fileName)return `<div class="card mu">Video file: ${E(r.fileName)}. Select it again to play it here.<div style="margin-top:8px"><input type="file" accept="video/*" onchange="files['${r.id}']=URL.createObjectURL(this.files[0]);render()"></div></div>`;
  return u?`<div class="card row between"><span class="mu">This link cannot play inside the app.</span><a class="b" href="${E(u)}" target="_blank" rel="noopener">Open link</a></div>`:''}
 function openVideo(u,title){const h=embedHtml(u);if(!h){window.open(u,'_blank','noopener');return}closeVideo();
@@ -27,7 +27,6 @@ function openVideo(u,title){const h=embedHtml(u);if(!h){window.open(u,'_blank','
  m.innerHTML=`<div style="width:min(960px,100%);background:#14161c;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px"><div class="row between" style="margin-bottom:10px"><b>${E(title||'Video')}</b><button class="b s" onclick="closeVideo()">Close</button></div>${h}</div>`;
  m.onclick=e=>{if(e.target===m)closeVideo()};document.body.appendChild(m)}
 function closeVideo(){const m=$('#vm');if(m)m.remove()}
-function openRecVideo(id){const r=rec(id);openVideo(files[id]||r.url,r.title)}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVideo()});
 function thumb(u,t){if(!canEmbed(u))return '';const y=ytId(u);return `<div class="thumb" data-u="${E(u)}" data-t="${E(t)}" onclick="openVideo(this.dataset.u,this.dataset.t)">${y?`<img src="https://i.ytimg.com/vi/${y}/mqdefault.jpg" alt="">`:''}<span class="play"></span></div>`}
 const playBtn=(u,t)=>canEmbed(u)?`<button class="x" style="color:var(--ac)" data-u="${E(u)}" data-t="${E(t)}" onclick="openVideo(this.dataset.u,this.dataset.t)">Play</button>`:'';

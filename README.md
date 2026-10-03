@@ -5,8 +5,8 @@ A single-page web app for tracking piano practice. It runs entirely in your brow
 ## Features
 
 - **Today:** streak, today's plan, and a practice timer with start, pause, resume and stop. Only active time is logged, and the timer survives closing the page.
-- **Focus next:** your weakest spots, built from "needs work" timestamp notes and the "what to fix" lines in a recording summary. Mark them improved (Tricky, Improving, Solid). They return to Tricky if flagged again.
-- **Review:** add recordings (a YouTube or Drive link, or a local video file) that play inside the app, either small on the page or in a pop-up window and write timestamped notes with a type, section, technique tag and optional attached resource. Tap a timestamp to jump to that moment.
+- **Focus next:** every open "needs work" note, newest first. Mark each one done on its own, step by step, from Today or from the recording.
+- **Review:** add recordings (a YouTube or Drive link, or a local video file) that play inside the app, either small on the page or in a pop-up window and write timestamped notes with a type, section, technique tag and optional attached resource. Adding a note does not interrupt the video. Tap a timestamp to jump to that moment.
 - **Tags:** create, rename and delete your own tags, and assign them to recordings, pieces and resources. Notes use them as technique tags.
 - **Search:** one box that searches recordings, notes, pieces, resources, tags, dates and calendar items.
 - **Pieces:** a library with a status for each piece, plus the weak spots tied to it.
