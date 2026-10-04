@@ -33,7 +33,7 @@ The app can keep your data in a JSON file in your own Google Drive, so every dev
 3. Deploy as a Web app: Execute as Me, access Anyone.
 4. On each device, open Backup, paste the link (ends with `/exec`) and your secret, and press Connect.
 
-The app loads the file when it opens and saves to it a moment after each change. Newest change wins, so avoid editing on two devices at the same moment. Anyone with the link and secret can read and write the file, so keep both private. If you edit the script later, deploy a new version. Export backups still work as before.
+Connecting never changes anything until you confirm. The app also refuses to upload when this device has far less data than the cloud, or before it has checked the cloud, and asks you first, so an empty copy cannot wipe your data. The app loads the file when it opens and saves to it a moment after each change. Newest change wins, so avoid editing on two devices at the same moment. Anyone with the link and secret can read and write the file, so keep both private. If you edit the script later, deploy a new version. Export backups still work as before.
 
 ## Your data
 
