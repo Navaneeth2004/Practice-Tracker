@@ -1,6 +1,6 @@
 // Backup screen
 V.data=function(){const d=db.lastExport?Math.floor((Date.now()-db.lastExport)/864e5)+' days ago':'never';
- return `<h2>Backup</h2>
+ return `<h2>Backup</h2>${syncCard()}
  <div class="card"><h3 style="margin-top:0">Export</h3><div class="mu">Last export: ${d}</div>
  <div class="form" style="margin:14px 0"><button class="b" onclick="exp('json')">Export backup (JSON)</button><button class="b s" onclick="exp('txt')">Export notes as text</button></div>
  <textarea id="ex" readonly placeholder="Your export appears here. Copy it and save it to a file, or send it to your other device." style="min-height:120px"></textarea>
@@ -10,3 +10,10 @@ V.data=function(){const d=db.lastExport?Math.floor((Date.now()-db.lastExport)/86
  <textarea id="im" placeholder="Paste backup JSON here" style="min-height:120px"></textarea>
  <div class="form"><button class="b" onclick="imp(0)">Replace everything</button><button class="b s" onclick="imp(1)">Merge with this device</button></div>
  ${msg?`<div class="mu" style="margin-top:12px">${E(msg)}</div>`:''}</div>`};
+
+function syncCard(){let body;
+ if(syncChoice)body=`<div>The cloud already has data, and so does this device. Which one do you want to keep?</div><div class="form" style="margin-top:12px"><button class="b" onclick="useCloud()">Use cloud data (replaces this device)</button><button class="b s" onclick="useDevice()">Upload this device (replaces cloud)</button></div>`;
+ else if(syncOn())body=`<div id="syncst" class="${sync.status==='error'?'bad':'mu'}">${E(syncText())}</div><div class="mu link">${E(sync.url)}</div><div class="row" style="margin-top:12px"><button class="b" onclick="syncNow()">Sync now</button><button class="b s" onclick="disconnectSync()">Disconnect</button></div>`;
+ else body=`<div class="mu">Paste your link on every device and they all share one data file in your Google Drive. Without a link, data stays on this device.</div><div class="form" style="margin-top:12px"><input id="sl" class="wide" placeholder="Web app link (ends with /exec)"><input id="sk" class="wide" placeholder="Key (the secret you chose)"></div><button class="b full" onclick="connectSync()">Connect</button><div id="syncst" class="${sync.status==='error'?'bad':'mu'}" style="margin-top:10px">${sync.status==='error'?E(syncText()):''}</div>`;
+ return `<div class="card"><h3 style="margin-top:0">Cloud sync (optional)</h3>${body}
+ <details style="margin-top:14px"><summary class="mu" style="cursor:pointer">How to set it up (one time)</summary><ol class="mu" style="padding-left:20px;line-height:1.7"><li>Open script.google.com and choose New project.</li><li>Delete the default code, paste the script below, and change <b>choose-a-secret</b> to your own secret.</li><li>Choose Deploy, then New deployment, type Web app. Set Execute as: Me, and Who has access: Anyone. Deploy and allow access when asked.</li><li>Copy the Web app link (it ends with /exec), then paste it and your secret above, on each device.</li></ol><textarea id="gs" readonly style="min-height:150px;font:12px monospace">${E(SYNC_SCRIPT)}</textarea><button class="b s" onclick="copyEl('gs',this)">Copy script</button></details></div>`}

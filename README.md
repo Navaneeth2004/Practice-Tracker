@@ -13,6 +13,7 @@ A single-page web app for tracking piano practice. It runs entirely in your brow
 - **Resources:** save links or text, tagged by technique, and attach them to notes.
 - **Calendar:** a monthly view for planning and logging. Add items to any day, tick them off, and log minutes practiced.
 - **Progress:** streaks, a 12-month practice heatmap, minutes this week, most-flagged techniques and a status history.
+- **Cloud sync (optional):** paste one link on every device and they share one data file in your Google Drive. Without a link, data stays on the device.
 - **Backup:** export a JSON backup or readable notes. Import with Replace or Merge to move data between devices.
 
 Everything is editable, and the app uses a dark theme with no emojis.
@@ -22,6 +23,17 @@ Everything is editable, and the app uses a dark theme with no emojis.
 - **Locally:** open `index.html` in a browser. Keep all the files and folders together.
 - **Local server (for YouTube playback):** YouTube will not play inside a page opened as a file. In the folder, run `python -m http.server 8000` and open `http://localhost:8000`.
 - **On GitHub Pages:** push the folder, then enable Pages (Settings, Pages, deploy from the main branch). Open the link on your phone and use "Add to Home Screen".
+
+## Cloud sync (optional)
+
+The app can keep your data in a JSON file in your own Google Drive, so every device shares it. A small Google Apps Script web app does the reading and writing, so no keys live in this repo.
+
+1. Go to script.google.com and create a new project.
+2. Paste the script shown in the app (Backup tab, Cloud sync, "How to set it up") and change the secret.
+3. Deploy as a Web app: Execute as Me, access Anyone.
+4. On each device, open Backup, paste the link (ends with `/exec`) and your secret, and press Connect.
+
+The app loads the file when it opens and saves to it a moment after each change. Newest change wins, so avoid editing on two devices at the same moment. Anyone with the link and secret can read and write the file, so keep both private. If you edit the script later, deploy a new version. Export backups still work as before.
 
 ## Your data
 
@@ -51,6 +63,7 @@ js/
     tags.js           tag library and tag picker
     player.js         in-app video player (YouTube, Drive, files)
     search.js         search across everything
+    sync.js           optional cloud sync through a Drive-backed web app
     timer.js          practice timer
   views/              what each screen looks like (one file per screen)
     today.js  review.js  pieces.js  resources.js  calendar.js  tags.js  search.js  progress.js  backup.js
