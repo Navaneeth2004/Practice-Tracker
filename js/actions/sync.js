@@ -14,3 +14,11 @@ function holdUpload(){syncHold=null;push(true).then(render)}
 async function holdLoad(){syncHold=null;try{const t=await call('GET');if(!t.empty)applyRemote(t.data);pending=false;cloudSize=size(db);setStatus('ok')}catch(e){setStatus('error',e.message)}render()}
 function syncNow(){pending?push():pull()}
 function copyEl(id,b){const t=$('#'+id);t.select();try{document.execCommand('copy');b.textContent='Copied'}catch(e){}setTimeout(()=>{b.textContent='Copy script'},1600)}
+function askConnect(){const u=$('#sl').value.trim();if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(u)){need('Add the link','Paste the web app link, which ends with /exec.','#sl');return}
+ ask('Connect to cloud sync','Nothing is changed yet. You will see what the cloud and this device hold, then choose what to keep.','Connect',connectSync)}
+function askSyncNow(){ask('Sync now','Check the cloud and exchange the latest changes with this device?','Sync now',()=>{pending?push():pull()})}
+function askDisconnect(){ask('Disconnect cloud sync','This device stops syncing. Its data is kept and the cloud file is not changed.','Disconnect',disconnectSync)}
+function askHoldLoad(){ask('Replace this device with the cloud data','Changes on this device that are not in the cloud will be lost.','Replace',holdLoad,1)}
+function askHoldUpload(){ask('Overwrite the cloud with this device','Cloud data that is not on this device will be lost.','Overwrite',holdUpload,1)}
+function askUseCloud(){hasData(db)?ask('Replace this device with the cloud data','Everything on this device is replaced by the cloud data.','Replace',useCloud,1):useCloud()}
+function askUseDevice(){hasData(syncChoice.data)?ask('Overwrite the cloud with this device','The cloud data is replaced by what is on this device.','Overwrite',useDevice,1):useDevice()}
