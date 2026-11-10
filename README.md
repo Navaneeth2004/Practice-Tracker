@@ -12,6 +12,9 @@ A single-page web app for tracking piano practice. It runs entirely in your brow
 - **Pieces:** a library with a status for each piece, plus the weak spots tied to it.
 - **Resources:** save links or text, tagged by technique, and attach them to notes.
 - **Calendar:** a monthly view for planning and logging. Add items to any day, tick them off, and log minutes practiced.
+- **Day notes:** write free-text notes on any calendar day.
+- **Weekly routines:** set repeating plans (for example Slow tempo day on Mon, Wed, Thu, Sat, Sun) with what to practice and which pieces. They show on those days in Calendar and on Today, and can be ticked off.
+- **Piece tempo:** set the BPM you practice each piece at now, plus a goal, with a short history.
 - **Progress:** streaks, a 12-month practice heatmap, minutes this week, most-flagged techniques and a status history.
 - **Cloud sync (optional):** paste one link on every device and they share one data file in your Google Drive. Without a link, data stays on the device.
 - **Backup:** export a JSON backup or readable notes. Import with Replace or Merge to move data between devices.

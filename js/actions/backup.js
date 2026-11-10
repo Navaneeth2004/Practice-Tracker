@@ -4,7 +4,7 @@ function exp(k){let o;if(k==='json')o=JSON.stringify(db);else o=db.recs.map(r=>`
  db.lastExport=Date.now();save();$('#ex').value=o}
 function readF(i){const f=i.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('#im').value=r.result};r.readAsText(f)}
 function imp(merge){try{const d=JSON.parse($('#im').value);if(!merge){db=Object.assign(db,d)}else{for(const k of ['pieces','recs','res']){const ids=new Set(db[k].map(x=>x.id));(d[k]||[]).forEach(x=>{if(!ids.has(x.id))db[k].push(x)})}
- for(const k of ['log','done','st','sched']){db[k]=Object.assign({},d[k]||{},db[k])}}
+ for(const k of ['log','done','st','sched']){db[k]=Object.assign({},d[k]||{},db[k])}mergePlus(d)}
  ensureTags(d.tags||[]);save();msg='Import complete.'}catch(e){msg='Could not read that backup.'}render()}
 function copyEx(b){const t=$('#ex');if(!t.value)return;t.select();try{document.execCommand('copy');b.textContent='Copied'}catch(e){b.textContent='Select the text and copy it'}setTimeout(()=>{b.textContent='Copy to clipboard'},1600)}
 function askExp(k){ask(k==='json'?'Export backup':'Export notes as text',k==='json'?'This creates a copy of all your data. Keep the file private.':'This creates a readable text copy of your recordings and notes.','Export',()=>exp(k))}
