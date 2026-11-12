@@ -2,7 +2,7 @@
 const ARR=['pieces','recs','res','folders','tags','plans'],OBJ=['cal','log','done','st','sched','cnotes'];
 function cleanBackup(d){if(!d||typeof d!=='object'||Array.isArray(d))throw 0;const o={};
  ARR.forEach(k=>{if(d[k]!=null){if(!Array.isArray(d[k]))throw 0;o[k]=d[k].filter(x=>k==='tags'?typeof x==='string':x&&typeof x==='object'&&/^[\w-]{1,40}$/.test(x.id))}});
- OBJ.forEach(k=>{if(d[k]!=null){if(typeof d[k]!=='object'||Array.isArray(d[k]))throw 0;o[k]=d[k]}});return o}
+ OBJ.forEach(k=>{if(d[k]!=null){if(typeof d[k]!=='object'||Array.isArray(d[k]))throw 0;o[k]=d[k]}});return deepClean(o)}
 function imp(merge){try{const d=cleanBackup(JSON.parse($('#im').value));
  if(!merge){db=Object.assign({cal:{},pieces:[],recs:[],res:[],sched:{},done:{},log:{},st:{},lastExport:null},d,{timer:db.timer})}
  else{for(const k of ['pieces','recs','res','folders']){db[k]=db[k]||[];const ids=new Set(db[k].map(x=>x.id));(d[k]||[]).forEach(x=>{if(!ids.has(x.id))db[k].push(x)})}

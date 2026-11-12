@@ -22,3 +22,8 @@ main{max-width:1180px}
 .bars{display:flex;align-items:flex-end;gap:4px;height:110px}.bars i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--ac),var(--ac2));min-height:2px}
 .bl{display:flex;gap:4px;margin-top:4px}.bl span{flex:1;text-align:center;font-size:10px;color:var(--mu)}
 .hb{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,.08)}.hb i{display:block;height:100%;border-radius:4px;background:var(--ac)}
+/* Task rows as switch rows */
+.chk{padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);margin-bottom:6px;align-items:center;transition:.15s}
+.chk:hover{background:rgba(255,255,255,.07)}
+.chk:has(input:checked){background:rgba(95,208,160,.09)}
+.chk:has(input:checked)>span{opacity:.55;text-decoration:line-through}
