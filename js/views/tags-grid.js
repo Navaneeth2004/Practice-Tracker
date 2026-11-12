@@ -1,0 +1,2 @@
+// Tags: compact grid instead of one long column
+V.tags=function(){return `<h2>Tags</h2><div class="card"><div class="row"><input id="tn" placeholder="New tag name" onkeydown="if(event.key==='Enter')addTag()"><button class="b" onclick="addTag()">Add tag</button><span class="mu">${db.tags.length} tags</span></div></div><div class="tgrid">${db.tags.map(tagRow).join('')||'<div class="mu">No tags yet.</div>'}</div>`};

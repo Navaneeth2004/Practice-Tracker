@@ -1,0 +1,24 @@
+/* Layout, switches, grids, tabs, dock. Loaded after the other css files. */
+main{max-width:1180px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}.grid>.card,.tgrid>.card{margin:0}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+.seg{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.05);margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.seg button{flex:none;border:0;background:none;color:var(--mu);padding:9px 14px;border-radius:10px;font:600 13px Inter,sans-serif;cursor:pointer;white-space:nowrap}
+.seg button.on{background:rgba(232,185,95,.2);color:var(--ac)}
+.chk input[type=checkbox]{appearance:none;-webkit-appearance:none;width:42px;height:24px;border-radius:14px;background:rgba(255,255,255,.12);position:relative;cursor:pointer;transition:.2s;margin-top:0}
+.chk input[type=checkbox]:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#cfd0d6;transition:.2s}
+.chk input[type=checkbox]:checked{background:linear-gradient(135deg,var(--ac),var(--ac2))}
+.chk input[type=checkbox]:checked:after{left:21px;background:#1a1204}
+.timer button.x{border:1px solid rgba(255,122,104,.4);background:rgba(255,122,104,.1);border-radius:12px;padding:12px 20px;min-height:46px;font-weight:600;opacity:1}
+.timer button.x:hover{background:rgba(255,122,104,.22)}
+.tempo{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)}
+.drawer{margin-bottom:14px}
+@keyframes fl{from{box-shadow:0 0 0 3px var(--ac)}to{box-shadow:0 0 0 0 transparent}}.flash{animation:fl 1.8s}
+#dock{position:fixed;right:14px;bottom:86px;width:min(360px,calc(100% - 28px));z-index:50;background:#14161c;border:1px solid var(--bd);border-radius:16px;padding:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+@media(min-width:701px){#dock{bottom:18px}}
+#dock .player-wrap,#dock .player{margin:0;max-width:none}
+.bars{display:flex;align-items:flex-end;gap:4px;height:110px}.bars i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--ac),var(--ac2));min-height:2px}
+.bl{display:flex;gap:4px;margin-top:4px}.bl span{flex:1;text-align:center;font-size:10px;color:var(--mu)}
+.hb{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,.08)}.hb i{display:block;height:100%;border-radius:4px;background:var(--ac)}
