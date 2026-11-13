@@ -1,7 +1,7 @@
 // Review screen: recordings grid by folder, and the recording page (video left, notes right)
 let rfold='all',nfilter='all';
 const validF=id=>!!id&&(db.folders||[]).some(f=>f.id===id);
-const folderOf=r=>{const p=db.pieces.find(x=>x.id===r.piece);if(p&&validF(p.folder))return p.folder;return validF(r.folder)?r.folder:''};
+const folderOf=r=>{if(validF(r.folder))return r.folder;const p=db.pieces.find(x=>x.id===r.piece);return p&&validF(p.folder)?p.folder:''};
 let rpiece='all';
 function pieceOpts(sel){const fl=db.folders||[],o=p=>`<option value="${E(p.id)}"${p.id===sel?' selected':''}>${E(p.name)}</option>`;
  return fl.map(f=>{const a=db.pieces.filter(p=>p.folder===f.id);return a.length?`<optgroup label="${E(f.name)}">${a.map(o).join('')}</optgroup>`:''}).join('')+db.pieces.filter(p=>!fl.some(f=>f.id===p.folder)).map(o).join('')}
@@ -9,8 +9,9 @@ function recCard(r){const y=ytId(r.url),open=(r.notes||[]).filter(n=>n.type==='n
  return `<div class="card rcard" onclick="openRecording('${r.id}')"><div class="rth">${y?`<img src="https://i.ytimg.com/vi/${y}/mqdefault.jpg" alt="">`:'<span class="mu">No preview</span>'}${r.rating?`<b class="rbadge">${r.rating}/10</b>`:''}</div><div class="rbody"><b>${E(r.title)}</b><div class="mu">${fmtDate(r.date)} &middot; ${E(pname(r.piece))}</div><div class="mu">${pl((r.notes||[]).length,'note')}${open?` &middot; <span class="bad">${open} to fix</span>`:''}</div>${chipLine(r.tags,8)}</div></div>`}
 V.review=function(){if(openRec){const r=rec(openRec);if(r)return recView(r);openRec=null}
  const fl=db.folders||[];if(rfold!=='all'&&rfold!=='none'&&!validF(rfold))rfold='all';
- const scope=db.pieces.filter(p=>rfold==='all'||(rfold==='none'?!validF(p.folder):p.folder===rfold));if(rpiece!=='all'&&!scope.some(p=>p.id===rpiece))rpiece='all';
- const inFold=r=>rfold==='all'||(rfold==='none'?folderOf(r)==='':folderOf(r)===rfold),recs=db.recs.slice().reverse().filter(r=>inFold(r)&&(rpiece==='all'||r.piece===rpiece)),
+ const inFold=r=>rfold==='all'||(rfold==='none'?folderOf(r)==='':folderOf(r)===rfold);
+ const scope=db.pieces.filter(p=>rfold==='all'||(rfold==='none'?!validF(p.folder):p.folder===rfold)||db.recs.some(r=>r.piece===p.id&&inFold(r)));if(rpiece!=='all'&&!scope.some(p=>p.id===rpiece))rpiece='all';
+ const recs=db.recs.slice().reverse().filter(r=>inFold(r)&&(rpiece==='all'||r.piece===rpiece)),
   cnt=v=>db.recs.filter(r=>v==='all'||(v==='none'?folderOf(r)==='':folderOf(r)===v)).length,
   chip=(v,n)=>`<button class="${rfold===v?'on':''}" data-f="${E(v)}" onclick="rfold=this.dataset.f;rpiece='all';render()">${E(n)} (${cnt(v)})</button>`,
   pchip=(v,n,c)=>`<button class="${rpiece===v?'on':''}" data-p="${E(v)}" onclick="rpiece=this.dataset.p;render()">${E(n)} (${c})</button>`,groups=[];
@@ -19,7 +20,7 @@ V.review=function(){if(openRec){const r=rec(openRec);if(r)return recView(r);open
  else{scope.forEach(p=>{const c=recs.filter(r=>r.piece===p.id);if(c.length)groups.push([p.name,c])});const c=recs.filter(r=>!db.pieces.some(p=>p.id===r.piece));if(c.length)groups.push(['No piece',c])}
  const body=groups.map(([n,c])=>`<h3>${E(n)} (${c.length})</h3><div class="grid">${c.map(recCard).join('')}</div>`).join('')||'<div class="empty">No recordings here yet.</div>';
  return `<h2>Review</h2><div class="row" style="margin-bottom:10px;flex-wrap:nowrap"><div class="seg" style="margin:0;flex:1">${chip('all','All')}${fl.map(f=>chip(f.id,f.name)).join('')}${chip('none','Unfiled')}</div><button class="b sm" onclick="newRecSheet()">New recording</button></div>
- ${scope.length?`<div class="seg">${pchip('all','All pieces',recs.length&&rpiece==='all'?recs.length:db.recs.filter(inFold).length)}${scope.map(p=>pchip(p.id,p.name,db.recs.filter(r=>r.piece===p.id).length)).join('')}</div>`:''}${body}`};
+ ${scope.length?`<div class="seg">${pchip('all','All pieces',recs.length&&rpiece==='all'?recs.length:db.recs.filter(inFold).length)}${scope.map(p=>pchip(p.id,p.name,db.recs.filter(r=>r.piece===p.id&&inFold(r)).length)).join('')}</div>`:''}${body}`};
 function recView(r){return `<a href="#" class="back" onclick="openRec=null;nfilter='all';render();return false">&lsaquo; All recordings</a>
  <div class="rhead"><div class="grow"><h2 style="margin:0 0 6px">${E(r.title)}</h2><div class="mu">${fmtDate(r.date)} &middot; ${E(pname(r.piece))}</div>${chipLine(r.tags,10)}</div><div class="row" style="flex-wrap:nowrap"><select class="rsel" onchange="setRating('${r.id}',this.value)">${Array.from({length:11},(_,i)=>`<option value="${i}"${(r.rating||0)===i?' selected':''}>${i?i+' / 10':'Not rated'}</option>`).join('')}</select><button class="b s sm" onclick="editRecSheet('${r.id}')">Edit</button></div></div>
  <div class="rec"><div class="recv">${playerHtml(r,files[r.id])}</div><div id="notes-area">${notesHtml(r)}</div></div>`}
