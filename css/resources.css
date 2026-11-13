@@ -1,0 +1,9 @@
+/* Resources screen */
+.rc{display:flex;flex-direction:column;gap:8px}
+.rmedia{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;margin-bottom:6px}
+.rmedia img{width:100%;height:100%;object-fit:cover;opacity:.85;display:block}.rmedia video{width:100%;height:100%;max-height:none;border-radius:0}
+.rmedia .player,.rmedia .player-wrap{max-width:none;margin:0;height:100%;border-radius:0}.rmedia .player-wrap{aspect-ratio:auto}
+.thumbbtn{cursor:pointer}.playi{position:absolute;inset:0;display:grid;place-items:center}
+.playi:after{content:"";width:0;height:0;border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.6))}
+.rtitle{font-size:16px;overflow-wrap:anywhere}.rlink{font-size:13px;overflow-wrap:anywhere}
+.rtext{white-space:pre-wrap;color:var(--mu);font-size:14px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}

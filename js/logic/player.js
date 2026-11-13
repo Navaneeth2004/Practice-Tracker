@@ -21,15 +21,6 @@ function playerHtml(r,f){const u=r.url||'';let m='',can=false;
  if(m)return `${driveId(u)?'<div class="mu" style="margin-bottom:8px">Drive cannot report the time, so type it yourself.</div>':''}${m}`;
  if(r.fileName)return `<div class="card mu">Video file: ${E(r.fileName)}. Select it again to play it here.<div style="margin-top:8px"><input type="file" accept="video/*" onchange="files['${r.id}']=URL.createObjectURL(this.files[0]);render()"></div></div>`;
  return u?`<div class="card row between"><span class="mu">This link cannot play inside the app.</span><a class="b" href="${E(u)}" target="_blank" rel="noopener">Open link</a></div>`:''}
-function openVideo(u,title){const h=embedHtml(u);if(!h){window.open(u,'_blank','noopener');return}closeVideo();
- const v=$('#vd');if(v)v.pause();if(ytp&&ytp.pauseVideo)try{ytp.pauseVideo()}catch(e){}
- const m=document.createElement('div');m.id='vm';m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px';
- m.innerHTML=`<div style="width:min(960px,100%);background:#14161c;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:14px"><div class="row between" style="margin-bottom:10px"><b>${E(title||'Video')}</b><button class="b s" onclick="closeVideo()">Close</button></div>${h}</div>`;
- m.onclick=e=>{if(e.target===m)closeVideo()};document.body.appendChild(m)}
-function closeVideo(){const m=$('#vm');if(m)m.remove()}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVideo()});
-function thumb(u,t){if(!canEmbed(u))return '';const y=ytId(u);return `<div class="thumb" data-u="${E(u)}" data-t="${E(t)}" onclick="openVideo(this.dataset.u,this.dataset.t)">${y?`<img src="https://i.ytimg.com/vi/${y}/mqdefault.jpg" alt="">`:''}<span class="play"></span></div>`}
-const playBtn=(u,t)=>canEmbed(u)?`<button class="x" style="color:var(--ac)" data-u="${E(u)}" data-t="${E(t)}" onclick="openVideo(this.dataset.u,this.dataset.t)">Play</button>`:'';
 function initPlayer(){ytp=null;if(!$('#yt'))return;const go=()=>{try{ytp=new YT.Player('yt')}catch(e){}};
  if(window.YT&&YT.Player){go();return}ytq.push(go);
  if(!document.getElementById('ytapi')){const s=document.createElement('script');s.id='ytapi';s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);window.onYouTubeIframeAPIReady=()=>{ytq.forEach(fn=>fn());ytq=[]}}}

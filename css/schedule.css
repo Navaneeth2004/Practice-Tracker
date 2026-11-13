@@ -1,0 +1,4 @@
+/* Calendar screen */
+.dchips{display:flex;gap:4px;margin:10px 0}.dchips span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:600 12px Inter,sans-serif;background:rgba(255,255,255,.05);color:var(--mu)}.dchips .on{background:rgba(232,185,95,.2);color:var(--ac)}
+.rt.off{opacity:.55}.dnote{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);margin-bottom:8px}
+#daypanel .seg{margin:14px 0}

@@ -6,5 +6,3 @@ function movePiece(id,f){const p=db.pieces.find(x=>x.id===id);if(!p)return;if(f)
 function setTempo(id){const p=db.pieces.find(x=>x.id===id),v=Math.round(+$('#tb-'+id).value);
  if(!(v>=1&&v<=400)){need('Enter a tempo','Type a BPM between 1 and 400.','#tb-'+id);return}
  p.tempo=v;delete p.goal;p.tl=(p.tl||[]).filter(x=>x.d!==today());p.tl.push({d:today(),bpm:v});save();render()}
-// close the add-recording drawer once a recording is added
-const _addRec=addRec;addRec=function(){const ok=!!$('#rt').value.trim();_addRec();if(ok)radd=false};

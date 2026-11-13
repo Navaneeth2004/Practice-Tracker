@@ -1,0 +1,8 @@
+/* Tags, Search, Progress */
+.twall{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.ttile{background:var(--card);border:1px solid var(--cb);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}.tcount{font:700 22px Fraunces,Georgia,serif;color:var(--ac)}
+.chipscroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.chipscroll .chip{flex:none}
+.sbig{width:100%;font-size:17px;padding:16px 18px}
+.sr{cursor:pointer;transition:.15s}.sr:hover{border-color:rgba(232,185,95,.4)}.kind{text-transform:uppercase;letter-spacing:1px;font-size:11px;margin-bottom:6px}.sr b{display:block;overflow-wrap:anywhere}
+.stats4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:14px}
+.stack{display:flex;height:10px;border-radius:6px;overflow:hidden;gap:2px}.stack i{display:block}

@@ -1,0 +1,9 @@
+/* Review screen */
+.rcard{display:flex;gap:14px;padding:12px;cursor:pointer;transition:.15s}.rcard:hover{border-color:rgba(232,185,95,.4);transform:translateY(-1px)}
+.rth{position:relative;width:120px;aspect-ratio:16/9;flex:none;border-radius:10px;overflow:hidden;background:#0d0e12;display:grid;place-items:center;border:1px solid var(--bd)}.rth img{width:100%;height:100%;object-fit:cover}
+.rbadge{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.72);color:var(--ac);font-size:11px;padding:2px 7px;border-radius:8px}
+.rbody{min-width:0;flex:1}.rbody>b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rec{display:grid;grid-template-columns:minmax(300px,520px) minmax(0,1fr);gap:18px;align-items:start}.recv{position:sticky;top:16px}
+.recv .player,.recv .player-wrap{max-width:none;margin:0}
+@media(max-width:900px){.rec{grid-template-columns:1fr}.recv{position:static}}
+.rsel{min-height:38px;padding:6px 36px 6px 12px}

@@ -1,14 +1,32 @@
-// Recording and note actions
+// Recording and note actions (forms open in the side panel)
 const rec=id=>db.recs.find(r=>r.id===id);
+function tUrl(u,t){try{const x=new URL(u);if(/youtu/.test(x.host)){x.searchParams.set('t',t+'s');return x.href}x.hash='t='+t;return x.href}catch(e){return u}}
 function grab(){const v=$('#vd');if(v)$('#nt').value=fmt(v.currentTime);else if(ytp&&ytp.getCurrentTime)$('#nt').value=fmt(ytp.getCurrentTime())}
 function seek(t){const v=$('#vd'),r=rec(openRec),box=$('.player,.player-wrap');if(box)box.scrollIntoView({behavior:'smooth',block:'center'});
  if(v){v.currentTime=t;v.play()}else if(ytp&&ytp.seekTo){ytp.seekTo(t,true);ytp.playVideo()}else if($('#yt')&&ytId(r.url))$('#yt').src='https://www.youtube.com/embed/'+ytId(r.url)+'?enablejsapi=1&playsinline=1&rel=0&autoplay=1&start='+Math.floor(t);else if(r&&r.url&&!$('#gd'))window.open(tUrl(r.url,t),'_blank','noopener')}
-function addRec(){const t=$('#rt').value.trim();if(!t){need('Add a title','Give the recording a title before adding it.','#rt');return}const f=$('#rf').files[0],id=uid();if(f)files[id]=URL.createObjectURL(f);
- db.recs.push({id,title:t,date:$('#rd').value||today(),piece:$('#rp').value,url:$('#ru').value.trim(),fileName:f?f.name:'',tags:pickedTags('rtg'),notes:[]});save();openRec=id;render()}
-function addNote(id){const x=$('#nx').value.trim();if(!x){need('Add some text','Write what happened in this note before saving it.','#nx');return}const o={t:parseT($('#nt').value),type:$('#ny').value,sec:$('#ns').value.trim(),tag:$('#ng').value.trim(),text:x,res:$('#nr').value},r=rec(id),n=ed&&ed[0]==='n'?r.notes.find(q=>'n:'+q.id===ed):null;ensureTags([o.tag]);if(n)Object.assign(n,o);else r.notes.push(Object.assign({id:uid()},o));ed=null;save();refreshNotes()}
-function delNote(id,n){const r=rec(id);r.notes=r.notes.filter(x=>x.id!==n);save();refreshNotes()}
-function refreshNotes(){const a=$('#notes-area'),r=rec(openRec);if(!a||!r){render();return}a.innerHTML=notesHtml(r);const nf=$('#nform');if(nf&&ed)nf.scrollIntoView({block:'center',behavior:'smooth'})}
-function openRecording(id){openRec=id;tab='review';ed=null;render()}
+function autoTitle(){const t=$('#rt');if(!t)return;const p=db.pieces.find(x=>x.id===$('#rp').value);if(p&&(!t.value||t.dataset.auto)){t.value=p.name+' - '+(db.recs.filter(r=>r.piece===p.id).length+1);t.dataset.auto='1'}}
+function pieceSelect(f,sel){return '<option value="">No piece</option>'+db.pieces.filter(p=>!f||p.folder===f).map(p=>`<option value="${E(p.id)}"${p.id===sel?' selected':''}>${E(p.name)}</option>`).join('')}
+function placeFields(r){const p=db.pieces.find(x=>x.id===r.piece),f=p&&validF(p.folder)?p.folder:(validF(r.folder)?r.folder:'');
+ return `<select id="rfo" class="wide" onchange="fillPieces()"><option value="">No folder</option>${(db.folders||[]).map(x=>`<option value="${E(x.id)}"${x.id===f?' selected':''}>${E(x.name)}</option>`).join('')}</select><select id="rp" class="wide" onchange="pickPiece()">${pieceSelect(f,r.piece||'')}</select>`}
+function fillPieces(){$('#rp').innerHTML=pieceSelect($('#rfo').value,'');autoTitle()}
+function pickPiece(){const p=db.pieces.find(x=>x.id===$('#rp').value);if(p&&validF(p.folder))$('#rfo').value=p.folder;autoTitle()}
+const placeOf=()=>{const piece=$('#rp').value;return{piece,folder:piece?'':$('#rfo').value}}
+function newRecSheet(){sheet('New recording',`<div class="form">${placeFields({piece:rpiece!=='all'?rpiece:'',folder:validF(rfold)?rfold:''})}<input id="rt" class="wide" placeholder="Title (filled in from the piece)" oninput="this.dataset.auto=''"><input id="rd" type="date" class="wide" value="${today()}"><input id="ru" type="url" class="wide" placeholder="Video link (YouTube, Drive...)"><input id="rf" type="file" accept="video/*" class="wide"></div><div class="mu" style="margin-top:8px">Pick a folder to narrow the pieces, or pick a piece directly. Picked files are not kept after you close the app.</div><div class="lbl">Tags</div>${tagPicker('rtg',[])}`,`<button class="b s" onclick="closeSheet()">Cancel</button><button class="b" onclick="addRec()">Add recording</button>`);autoTitle()}
+function addRec(){const t=$('#rt').value.trim();if(!t){need('Add a title','Give the recording a title before adding it.','#rt');return}const f=$('#rf').files[0],id=uid(),pl_=placeOf();if(f)files[id]=URL.createObjectURL(f);
+ db.recs.push({id,title:t,date:$('#rd').value||today(),piece:pl_.piece,folder:pl_.folder,url:$('#ru').value.trim(),fileName:f?f.name:'',tags:pickedTags('rtg'),notes:[]});save();closeSheet();openRec=id;nfilter='all';render()}
+function editRecSheet(id){const r=rec(id);sheet('Edit recording',`<div class="form">${placeFields(r)}<input id="et" class="wide" value="${E(r.title)}" placeholder="Title"><input id="edt" type="date" class="wide" value="${E(r.date)}"><input id="eu" class="wide" type="url" value="${E(r.url)}" placeholder="Video link"></div><div class="lbl">Tags</div>${tagPicker('etg',r.tags)}`,`<button class="b danger" style="margin-right:auto" onclick="askDelRec('${id}')">Delete</button><button class="b s" onclick="closeSheet()">Cancel</button><button class="b" onclick="saveRec('${id}')">Save</button>`)}
+function saveRec(id){const r=rec(id),t=$('#et').value.trim(),pl_=placeOf();if(t)r.title=t;r.date=$('#edt').value||r.date;r.piece=pl_.piece;r.folder=pl_.folder;r.url=$('#eu').value.trim();r.tags=pickedTags('etg');save();closeSheet();render()}
+function askDelRec(id){ask('Delete recording','This deletes the recording and all of its notes. This cannot be undone.','Delete',()=>{closeSheet();delRec(id)},1)}
 function delRec(id){db.recs=db.recs.filter(r=>r.id!==id);openRec=null;save();render()}
-function saveRec(id){const r=rec(id),t=$('#et').value.trim();if(t)r.title=t;r.date=$('#edt').value||r.date;r.piece=$('#ep').value;r.url=$('#eu').value.trim();r.tags=pickedTags('etg');ed=null;save();render()}
 function setRating(id,v){rec(id).rating=+v;save()}
+function openRecording(id){openRec=id;tab='review';ed=null;nfilter='all';render()}
+function noteSheet(rid,nid){const r=rec(rid),n=nid?r.notes.find(x=>x.id===nid):null,ty=n?n.type:'needs',o=(v,l)=>`<option value="${v}"${ty===v?' selected':''}>${l}</option>`;
+ sheet(n?'Edit note':'New note',`<div class="row" style="flex-wrap:nowrap"><input id="nt" placeholder="Time (1:32)" value="${n?fmt(n.t):''}" style="max-width:110px"><button class="b s" onclick="grab()">Use video time</button></div><div class="lbl">Type</div><select id="ny" style="width:100%">${o('needs','Needs work')}${o('good','Good')}${o('q','Question')}</select>
+ <div class="form" style="margin-top:12px"><input id="ns" placeholder="Section (bars 17-24)" value="${E(n?n.sec:'')}"><input id="ng" list="tl2" placeholder="Technique tag" value="${E(n?n.tag:'')}"><datalist id="tl2">${db.tags.map(t=>`<option>${E(t)}`).join('')}</datalist></div>
+ <div class="lbl">What happened</div><textarea id="nx" style="min-height:110px">${E(n?n.text:'')}</textarea><div class="lbl">Attach a resource</div><select id="nr" style="width:100%"><option value="">None</option>${db.res.map(x=>`<option value="${E(x.id)}"${n&&n.res===x.id?' selected':''}>${E(x.t)}</option>`).join('')}</select>`,
+ `<button class="b s" onclick="closeSheet()">Cancel</button><button class="b" onclick="saveNote('${rid}','${nid||''}')">${n?'Update note':'Save note'}</button>`);if(!n)grab()}
+function saveNote(rid,nid){const x=$('#nx').value.trim();if(!x){need('Add some text','Write what happened in this note before saving it.','#nx');return}
+ const o={t:parseT($('#nt').value),type:$('#ny').value,sec:$('#ns').value.trim(),tag:$('#ng').value.trim(),text:x,res:$('#nr').value},r=rec(rid),n=nid?r.notes.find(q=>q.id===nid):null;
+ ensureTags([o.tag]);if(n)Object.assign(n,o);else r.notes.push(Object.assign({id:uid()},o));save();closeSheet();refreshNotes()}
+function delNote(id,n){const r=rec(id);r.notes=r.notes.filter(x=>x.id!==n);save();refreshNotes()}
+function refreshNotes(){const a=$('#notes-area'),r=rec(openRec);if(!a||!r){render();return}a.innerHTML=notesHtml(r)}
